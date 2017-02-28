@@ -1,0 +1,5 @@
+Suggestion:
+[ ] Group by podcast
+[ ] Sort by name, date, star
+[ ] Saved Time
+[*] Download

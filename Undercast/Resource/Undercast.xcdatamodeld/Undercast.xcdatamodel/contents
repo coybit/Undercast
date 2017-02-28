@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G31" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="EntitySubscribedPodcast" representedClassName=".EntitySubscribedPodcast" syncable="YES">
+        <attribute name="pcover" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="pdescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pfeedUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pid" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="plastfeed" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ptitle" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="EntitySubscribedPodcast" positionX="-63" positionY="-18" width="128" height="135"/>
+    </elements>
+</model>
