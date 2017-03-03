@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UCXMLParser: NSObject, XMLParserDelegate {
+class XMLParser: NSObject, XMLParserDelegate {
     
     var currentPath:[String] = [];
     var parser:Foundation.XMLParser?;
@@ -17,18 +17,14 @@ class UCXMLParser: NSObject, XMLParserDelegate {
     var foundValue:String?;
     var callbackFound:((String?)->Void)?;
     var searchingForAttribute: Bool = false;
-    var sema1:DispatchSemaphore;
-    var sema2:DispatchSemaphore;
+    var sema:DispatchSemaphore;
     var rssURL:URL;
     var XMLData: Data?;
-    var downloadQueue:DispatchQueue;
     
     
     init(contentsOfURL:URL) {
         rssURL = contentsOfURL;
-        sema1 = DispatchSemaphore(value: 0);
-        sema2 = DispatchSemaphore(value: 0);
-        downloadQueue = DispatchQueue(label: "downloadQueue");
+        sema = DispatchSemaphore(value: 0);
     }
     
     func prepare() {
@@ -46,12 +42,12 @@ class UCXMLParser: NSObject, XMLParserDelegate {
                 self.XMLData = data;
                 NSLog("Downloaded ... \(self.rssURL)" );
                 
-                self.sema1.signal();
+                self.sema.signal();
 
             }) ;
             
             task.resume();
-            sema1.wait();
+            sema.wait();
         }
         
         if self.XMLData == nil {
@@ -65,11 +61,7 @@ class UCXMLParser: NSObject, XMLParserDelegate {
         self.parser = Foundation.XMLParser(data: self.XMLData!);
         self.parser!.shouldResolveExternalEntities = false;
         self.parser!.delegate = self;
-        let ret = self.parser!.parse();
-        
-        if ret == false {
-            sema2.signal();
-        }
+        self.parser!.parse();
     }
     
     func valueForAttribute(_ path: String, attribute: String) -> String? {
@@ -78,13 +70,11 @@ class UCXMLParser: NSObject, XMLParserDelegate {
         selectedPath = path;
         selectedAttribute = attribute;
         
-        //downloadQueue.async {
-            self.prepare();
-        //};
+        prepare();
         
-        NSLog("Start Processing ... \(rssURL)");
-        sema2.wait();
-        NSLog("Finish Processing ... \(rssURL)");
+        //NSLog("Start Processing ... \(rssURL)");
+        //sema.wait();
+        //NSLog("Finish Processing ... \(rssURL)");
         
         return foundValue;
     
@@ -95,12 +85,10 @@ class UCXMLParser: NSObject, XMLParserDelegate {
         searchingForAttribute = false;
         selectedPath = path;
         
-        //downloadQueue.async {
-            self.prepare();
-        //};
+        prepare();
         
         NSLog("Start Processing ... \(rssURL)");
-        sema2.wait();
+        sema.wait(timeout: DispatchTime.distantFuture);
         NSLog("Finish Processing ... \(rssURL)");
         
         return foundValue;
@@ -130,12 +118,12 @@ class UCXMLParser: NSObject, XMLParserDelegate {
     // MARK: - NSXML Parse delegate function
     
     // start parsing document
-    func parserDidStartDocument(_ parser: UCXMLParser) {
+    func parserDidStartDocument(_ parser: XMLParser) {
         // start parsing
     }
     
     // element start detected
-    func parser(_ parser: UCXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         
         currentPath.append(elementName);
         
@@ -143,7 +131,7 @@ class UCXMLParser: NSObject, XMLParserDelegate {
             if comparePath() {
                 
                 foundValue = attributeDict[selectedAttribute];
-                sema2.signal();
+                sema.signal();
                 
             }
         }
@@ -151,34 +139,33 @@ class UCXMLParser: NSObject, XMLParserDelegate {
     
     // characters received for some element
     
-    func parser(_ parser: UCXMLParser, foundCharacters string: String) {
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
         
         if !searchingForAttribute {
             if comparePath() {
                 
                 foundValue = string;
-                sema2.signal();
+                sema.signal();
     
             }
         }
     }
     
     // element end detected
-    func parser(_ parser: UCXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
 
         currentPath.removeLast();
     }
     
     // end parsing document
-    func parserDidEndDocument(_ parser: UCXMLParser) {
-        sema2.signal();
+    func parserDidEndDocument(_ parser: XMLParser) {
+        sema.signal();
     }
     
     // if any error detected while parsing.
-    func parser(_ parser: UCXMLParser, parseErrorOccurred parseError: Error) {
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         
         NSLog("Error");
-        sema2.signal();
         
     }
 }

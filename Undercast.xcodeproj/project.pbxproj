@@ -21,6 +21,7 @@
 		85A298911D8BE59D0065F2E5 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A298891D8BE59D0065F2E5 /* Feed.swift */; };
 		85A298921D8BE59D0065F2E5 /* FeedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A2988A1D8BE59D0065F2E5 /* FeedParser.swift */; };
 		85A298941D8BE59D0065F2E5 /* String+Muon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A2988D1D8BE59D0065F2E5 /* String+Muon.swift */; };
+		B46313A41E6A024D009A7A31 /* XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46313A31E6A024D009A7A31 /* XMLParser.swift */; };
 		B471817E1E66DE8B0044BB9C /* UCPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B471817D1E66DE8B0044BB9C /* UCPlayer.swift */; };
 		B47181801E66DED60044BB9C /* UnderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B471817F1E66DED60044BB9C /* UnderViewController.swift */; };
 		B48FB6BC1E65E0C100FB8B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B48FB6901E65E0C100FB8B75 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		85A2988C1D8BE59D0065F2E5 /* Muon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Muon.h; sourceTree = "<group>"; };
 		85A2988D1D8BE59D0065F2E5 /* String+Muon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Muon.swift"; sourceTree = "<group>"; };
 		9D304C26DD78C5745F5726B6 /* Pods-Undercast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Undercast.release.xcconfig"; path = "Pods/Target Support Files/Pods-Undercast/Pods-Undercast.release.xcconfig"; sourceTree = "<group>"; };
+		B46313A31E6A024D009A7A31 /* XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParser.swift; sourceTree = "<group>"; };
 		B47181781E6615D20044BB9C /* UCUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCUtilities.swift; sourceTree = "<group>"; };
 		B471817D1E66DE8B0044BB9C /* UCPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UCPlayer.swift; path = ../UCPlayer.swift; sourceTree = "<group>"; };
 		B471817F1E66DED60044BB9C /* UnderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderViewController.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 		85A298851D8BE59D0065F2E5 /* Muon */ = {
 			isa = PBXGroup;
 			children = (
+				B46313A31E6A024D009A7A31 /* XMLParser.swift */,
 				85A298861D8BE59D0065F2E5 /* Article.swift */,
 				85A298871D8BE59D0065F2E5 /* Author.swift */,
 				85A298881D8BE59D0065F2E5 /* Enclosure.swift */,
@@ -414,6 +417,7 @@
 				B471817E1E66DE8B0044BB9C /* UCPlayer.swift in Sources */,
 				B48FB6D71E65E0C100FB8B75 /* DownloadTableViewCell.swift in Sources */,
 				B48FB6C31E65E0C100FB8B75 /* Podcasts.swift in Sources */,
+				B46313A41E6A024D009A7A31 /* XMLParser.swift in Sources */,
 				B48FB6D41E65E0C100FB8B75 /* PodcastDetailViewController.swift in Sources */,
 				85A2988E1D8BE59D0065F2E5 /* Article.swift in Sources */,
 				B48FB6D81E65E0C100FB8B75 /* EpisodeTableViewCell.swift in Sources */,

@@ -12,7 +12,7 @@ import CoreData;
 let UCNotificationSubscribtionsListDidChange = NSNotification.Name(rawValue: "subscribtionsListDidChange");
 
 class Podcast: NSObject {
-
+    
     var title:String = "";
     var link:String = "";
     var text:String = "";
@@ -120,31 +120,39 @@ class Podcast: NSObject {
     func loadFromLocal() {
         
         parseFeed(feed: self.lastFeed);
-    
+        
     }
     
-    var coverImgURL:URL {
+    func coverImageURL(callback:@escaping (URL?)->Void) {
         
-        get {
-            
-//            if foundCoverImgURL != nil {
-//                return URL(string:foundCoverImgURL!)!;
-//            }
-//        
-//            let rssParser = XMLParser(contentsOfURL: URL(string:self.link as String)! );
-//            
-//            foundCoverImgURL = rssParser.valueForPath("rss/channel/image/url");
-//            
-//            if foundCoverImgURL == nil {
-//                
-//                foundCoverImgURL = rssParser.valueForAttribute("rss/channel/itunes:image", attribute: "href");
-//                
-//            }
-//            
-//            return URL(string:foundCoverImgURL!)!;
-
-            return URL(string: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")!;
+        if foundCoverImgURL != nil {
+            return callback( URL(string:foundCoverImgURL!)! )
         }
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            let url = URL(string:self.link as String)!;
+            let rssParser = UCXMLParser(contentsOfURL: url );
+            
+            self.foundCoverImgURL = rssParser.valueForPath("rss/channel/image/url");
+            
+            if self.foundCoverImgURL == nil {
+                
+                self.foundCoverImgURL = rssParser.valueForAttribute("rss/channel/itunes:image", attribute: "href");
+                
+            }
+            
+            if self.foundCoverImgURL == nil {
+                callback(nil);
+            }
+            else {
+                callback( URL(string:self.foundCoverImgURL!)! );
+            }
+            
+        }
+        
+        //            return URL(string: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")!;
+        
     }
     
     func cancelLoadingImage() {

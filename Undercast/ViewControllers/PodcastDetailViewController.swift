@@ -29,8 +29,11 @@ class PodcastDetailViewController: UnderViewController, UITableViewDelegate, UIT
         // Do any additional setup after loading the view.
         
         self.labelTitle.text = podcast!.title;
-        self.imgCover.sd_setImage(with: podcast?.coverImgURL);
         self.markdownView.textToMark(podcast!.text);
+        
+        podcast?.coverImageURL(callback: { (url) in
+            self.imgCover.sd_setImage(with: url);
+        })
         
         loadDynamicLabels();
     }

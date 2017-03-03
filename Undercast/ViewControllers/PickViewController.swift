@@ -145,8 +145,11 @@ class PickViewController: UnderViewController, UITableViewDelegate, UITableViewD
             cell.labelDuration.text = UCUtilities.Senconds2String(eps!.duration);
             cell.labelPublishDate.text = UCUtilities.timeAgoSinceDate(eps!.publishDate!);
             cell.labelDownloaded.text = eps!.isDownloaded() ? "Local" : "Stream";
-            cell.imageCover.sd_setImage(with: eps?.podcast.coverImgURL);
             
+            cell.imageCover.image  = UIImage(named: "ImagePlaceholder");
+            eps?.podcast.coverImageURL(callback: { (url) in
+                cell.imageCover.sd_setImage(with: url);
+            })
             
             let diff = UCUtilities.CalculateDifference(from:convertSliderToMinute(), to:eps!.duration);
             cell.labelDifference.text = diff.diff;

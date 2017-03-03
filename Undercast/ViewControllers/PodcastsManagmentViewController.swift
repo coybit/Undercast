@@ -112,10 +112,20 @@ class PodcastsManagmentViewController: UnderViewController, UITableViewDelegate,
         }
         
         if (indexPath as NSIndexPath).section == 0 {
+            
+            let podcast = results[(indexPath as NSIndexPath).row];
+            
             // Prepare cell
-            cell!.labelTitle.text = results[(indexPath as NSIndexPath).row].title as String;
-            cell!.labelDescription.text = results[(indexPath as NSIndexPath).row].text as String;
-            cell!.imgCover.sd_setImage(with: results[(indexPath as NSIndexPath).row].coverImgURL);
+            cell!.labelTitle.text = podcast.title as String;
+            cell!.labelDescription.text = podcast.text as String;
+            
+            cell!.imgCover.image = UIImage(named: "ImagePlaceholder");
+            podcast.coverImageURL(callback: { (url) in
+                if url != nil {
+                    cell!.imgCover.sd_setImage(with: url);
+                }
+            });
+            
         }
         else {
             
@@ -124,7 +134,13 @@ class PodcastsManagmentViewController: UnderViewController, UITableViewDelegate,
             
             cell!.labelTitle.text = podcast.title as String;
             cell!.labelDescription.text = podcast.text as String;
-            cell!.imgCover.sd_setImage(with: podcast.coverImgURL);
+            
+            cell!.imgCover.image = UIImage(named: "ImagePlaceholder");
+            podcast.coverImageURL(callback: { (url) in
+                if url != nil {
+                    cell!.imgCover.sd_setImage(with: url);
+                }
+            });
             
             cell?.labelDescription.sizeToFit();
         }

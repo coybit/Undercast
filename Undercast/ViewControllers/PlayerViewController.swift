@@ -51,8 +51,12 @@ class PlayerViewController: UITableViewController, EpisodeDelegate {
         self.markdownDescription.textToMark( authors + categories + CurrentEpisode.text );
         self.btnFastBackward.transform = CGAffineTransform(rotationAngle: 3.1415);
 
-        self.imgCover.sd_setImage(with: CurrentEpisode.podcast.coverImgURL);
-        self.imgBackground.sd_setImage(with: CurrentEpisode.podcast.coverImgURL);
+        CurrentEpisode.podcast.coverImageURL { (url) in
+            
+            self.imgCover.sd_setImage(with: url);
+            self.imgBackground.sd_setImage(with: url);
+            
+        }
         
         btnDownload.isEnabled = CurrentEpisode.isDownloaded();
         
