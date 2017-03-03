@@ -8,46 +8,42 @@
 
 import UIKit
 import CoreData
+import ChameleonFramework
+import MediaRSSParser
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    func scaleImage(_ image: UIImage, toSize newSize: CGSize) -> (UIImage) {
-        let hasAlpha = true
-        let scale: CGFloat = 0.0 // Use scale factor of main screen
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, !hasAlpha, scale)
-        image.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
-        
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        return scaledImage!
-    }
     
     func initTabbarController() {
+        
+        UITabBar.appearance().tintColor = UIColor.orange;
+        UINavigationBar.appearance().tintColor = UIColor.black;
+        
         let tabBarController = self.window?.rootViewController as! UITabBarController;
         
         let btnSize = CGSize(width: 24, height: 24);
         
         let item1 = tabBarController.tabBar.items![0] as UITabBarItem;
-        item1.title = "Recommend";
-        item1.image = scaleImage(UIImage(named: "ImageStar")!, toSize: btnSize);
+        item1.title = "Pick";
+        item1.image = UCUtilities.scaleImage(UIImage(named: "ImageStar")!, toSize: btnSize);
         
         let item2 = tabBarController.tabBar.items![1] as UITabBarItem;
         item2.title = "Podcasts";
-        item2.image = scaleImage(UIImage(named: "ImageList")!, toSize: btnSize);
+        item2.image = UCUtilities.scaleImage(UIImage(named: "ImageList")!, toSize: btnSize);
         
         let item3 = tabBarController.tabBar.items![2] as UITabBarItem;
         item3.title = "Downloads";
-        item3.image = scaleImage(UIImage(named: "ImageDownload")!, toSize: btnSize);
+        item3.image = UCUtilities.scaleImage(UIImage(named: "ImageDownload")!, toSize: btnSize);
+        
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        UINavigationBar.appearance().tintColor = UIColor.orange;
-        
+  
         initTabbarController();
         
         return true

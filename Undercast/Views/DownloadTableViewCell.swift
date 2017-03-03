@@ -7,38 +7,48 @@
 //
 
 import UIKit
+import ZFRippleButton
+
 
 class DownloadTableViewCell: UITableViewCell {
 
     @IBOutlet weak var progressState: UIProgressView!
     @IBOutlet weak var labelSubtitle: UILabel!
     @IBOutlet weak var labelTitle: UILabel!
+    @IBOutlet weak var btnAction: ZFRippleButton!
     
     var downloadID: String?
-    var downloading = true
+    var downloading = true;
+    
+    var progress:Float {
+        get {
+            return progressState.progress;
+        }
+        set {
+            self.progressState.progress = newValue;
+            
+            if( newValue == 1 ) {
+                self.btnAction.isHidden = true;
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
-    @IBAction func stopDidTouch(_ sender: UIButton) {
+    @IBAction func actionButtonDidTouch(_ sender: UIButton) {
         
         if downloading {
-            Downloader.sharedInstance.stop(downloadID!);
-            sender.setTitle("Start", for: UIControlState());
+            UCDownloader.sharedInstance.stop(downloadID!);
+            sender.setTitle("Resume", for: UIControlState());
         }
-        else {
-            Downloader.sharedInstance.restart(downloadID!);
-            sender.setTitle("Cancel", for: UIControlState());
+        else  {
+            UCDownloader.sharedInstance.restart(downloadID!);
+            sender.setTitle("Pause", for: UIControlState());
         }
-        
+
         downloading = !downloading;
     }
 }

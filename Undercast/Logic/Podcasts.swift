@@ -79,21 +79,38 @@ class Podcasts: NSObject {
         }
     }
     
-    func loadSubscribedPodcast() {
+    func loadSubscribedPodcast(callback:@escaping (()->Void)) {
         
         let queue = OperationQueue();
+        
         queue.qualityOfService = .userInitiated;
         queue.maxConcurrentOperationCount = 4;
         
         subscribedPodcastsList = subscribedPodcasts();
+        var remaindedPodcast = subscribedPodcastsList.count;
         
-        for podcast in subscribedPodcastsList {
-        
-            queue.addOperation({ 
-               
-                podcast.load();
+        if remaindedPodcast == 0 {
+            callback();
+        }
+        else {
+            
+            let semaphore = DispatchSemaphore(value: 1);
+            
+            for podcast in subscribedPodcastsList {
                 
-            });
+                queue.addOperation({
+                    
+                    podcast.load();
+                    
+                    semaphore.wait();
+                    remaindedPodcast -= 1;
+                    if remaindedPodcast <= 0 {
+                        callback();
+                    }
+                    semaphore.signal();
+                });
+                
+            }
             
         }
         
@@ -129,8 +146,6 @@ class Podcasts: NSObject {
         
         return subscribedPodcastsList;
     }
-    
-
     
     func managedObjectContext() -> NSManagedObjectContext? {
         

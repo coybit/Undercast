@@ -26,9 +26,9 @@ class DownloadItem: NSObject {
     var task:URLSessionTask?;
 }
 
-class Downloader: NSObject, URLSessionDelegate {
+class UCDownloader: NSObject, URLSessionDelegate {
 
-    static let sharedInstance = Downloader();
+    static let sharedInstance = UCDownloader();
     fileprivate var episodeList:[String:Episode] = [:];
     fileprivate var taskList:[String:URLSessionTask] = [:];
     
@@ -187,6 +187,6 @@ class Downloader: NSObject, URLSessionDelegate {
     }
     
     func broadcastChangInDownloads() {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NCDownloadListDidChange), object: nil);
+        NotificationCenter.default.post(name: UCNotificationReplicationStatusDidChange, object: nil);
     }
 }

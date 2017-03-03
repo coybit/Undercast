@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import SDWebImage
+import MarkedView
 
-class PodcastDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PodcastDetailViewController: UnderViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var markdownView: UIMarkedView!
     @IBOutlet weak var tableEpisodes: UITableView!
     @IBOutlet weak var btnSubscribe: UIButton!
     @IBOutlet weak var txtDescription: UITextView!
@@ -26,10 +29,8 @@ class PodcastDetailViewController: UIViewController, UITableViewDelegate, UITabl
         // Do any additional setup after loading the view.
         
         self.labelTitle.text = podcast!.title;
-        self.txtDescription.text = podcast!.text;
-        podcast?.loadCoverImageSync({ (coverImage) in
-            self.imgCover.image = coverImage;
-        });
+        self.imgCover.sd_setImage(with: podcast?.coverImgURL);
+        self.markdownView.textToMark(podcast!.text);
         
         loadDynamicLabels();
     }

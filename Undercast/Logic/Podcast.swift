@@ -9,14 +9,14 @@
 import UIKit
 import CoreData;
 
+let UCNotificationSubscribtionsListDidChange = NSNotification.Name(rawValue: "subscribtionsListDidChange");
 
 class Podcast: NSObject {
 
     var title:String = "";
     var link:String = "";
     var text:String = "";
-    var coverImgURL:String?;
-    var coverImage:UIImage?;
+    var foundCoverImgURL:String?;
     var episodes:[Episode] = [];
     var lastFeed:String = "";
     static let lockQueue = DispatchQueue(label: "com.test.LockQueue", attributes: [])
@@ -50,7 +50,7 @@ class Podcast: NSObject {
             self.title = feed.title;
             self.text = feed.description;
             self.link = feed.link.absoluteString;
-            self.coverImgURL = (feed.imageURL?.absoluteString)!;
+            self.foundCoverImgURL = (feed.imageURL?.absoluteString)!;
             
             for article in feed.articles {
                 
@@ -122,79 +122,28 @@ class Podcast: NSObject {
         parseFeed(feed: self.lastFeed);
     
     }
-
-    func loadCoverImageSync(_ completion:@escaping (_ coverImage:UIImage?)->Void) {
-        
-        Podcast.downloadQueue.maxConcurrentOperationCount = 4;
-        Podcast.downloadQueue.addOperation {
-            
-            print(">> Load: %@", self.coverImgURL?.md5());
-
-            self.loadCoverImageAsync();
-
-            print("<< Load: %@", self.coverImgURL?.md5());
-
-            
-            DispatchQueue.main.async(execute: {
-                completion(self.coverImage);
-            });
-        }
-    }
     
-    func loadCoverImageAsync() {
+    var coverImgURL:URL {
         
-        print(">> Load: %@", self.coverImgURL?.md5());
-        
-        self.loadCoverImage();
-        
-        print("<< Load: %@", self.coverImgURL?.md5());
+        get {
+            
+//            if foundCoverImgURL != nil {
+//                return URL(string:foundCoverImgURL!)!;
+//            }
+//        
+//            let rssParser = XMLParser(contentsOfURL: URL(string:self.link as String)! );
+//            
+//            foundCoverImgURL = rssParser.valueForPath("rss/channel/image/url");
+//            
+//            if foundCoverImgURL == nil {
+//                
+//                foundCoverImgURL = rssParser.valueForAttribute("rss/channel/itunes:image", attribute: "href");
+//                
+//            }
+//            
+//            return URL(string:foundCoverImgURL!)!;
 
-        
-    }
-    
-    fileprivate func loadCoverImage() {
-        
-        
-        if self.coverImage != nil {
-            return;
-        }
-        
-        
-        // Found cover image url
-        if self.coverImgURL == nil {
-            
-            let rssParser = XMLParser(contentsOfURL: URL(string:self.link as String)! );
-            
-            self.coverImgURL = rssParser.valueForPath("rss/channel/image/url");
-            
-            if self.coverImgURL == nil {
-                
-                self.coverImgURL = rssParser.valueForAttribute("rss/channel/itunes:image", attribute: "href");
-                
-            }
-        }
-        
-        guard self.coverImgURL != nil else {
-            return;
-        }
-        
-        
-        let hash = self.coverImgURL?.md5();
-        let path = URL(string: NSTemporaryDirectory())?.appendingPathComponent(hash!).absoluteString;
-        
-        // Cached?
-        if FileManager.default.fileExists(atPath: path!) {
-            
-            self.coverImage = UIImage(contentsOfFile: path!);
-            return;
-        }
-        
-        if let img = try? Data(contentsOf: URL(string: self.coverImgURL!)!) {
-            
-            try? img.write(to: URL(fileURLWithPath: path!), options: [.atomic]);
-            
-            self.coverImage = UIImage(data: img);
-            return;
+            return URL(string: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")!;
         }
     }
     
@@ -232,12 +181,10 @@ class Podcast: NSObject {
         p.setValue(self.text, forKey: "pdescription");
         p.setValue(self.link, forKey: "pfeedUrl");
         
-        if let img = self.coverImage {
-            p.setValue(UIImagePNGRepresentation(img), forKey: "pcover");
-        }
-        
         do { try moc.save(); }
         catch {}
+        
+        NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
     }
     
     
@@ -261,7 +208,7 @@ class Podcast: NSObject {
             
         } catch {}
         
-        return;
+        NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
     }
     
     func managedObjectContext() -> NSManagedObjectContext? {

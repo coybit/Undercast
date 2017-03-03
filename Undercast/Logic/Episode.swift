@@ -12,6 +12,8 @@ protocol EpisodeDelegate : class {
     func episodeDownloadingDidFinsh(_ error:NSError?);
 }
 
+let UCNotificationReplicationStatusDidChange = NSNotification.Name(rawValue: "ReplicationStatusDidChange");
+
 class Episode: NSObject {
 
     var title = "";
@@ -44,6 +46,10 @@ class Episode: NSObject {
         return filePath;
     }
     
+    func download() {
+        UCDownloader.sharedInstance.download(self);
+    }
+    
     func isDownloaded() -> Bool {
         
         let filePath = localPath();
@@ -67,6 +73,7 @@ class Episode: NSObject {
             do{ try FileManager.default.removeItem(at: localPath()!); }
             catch{}
             
+            NotificationCenter.default.post(name: UCNotificationReplicationStatusDidChange, object: nil);
         }
         
     }

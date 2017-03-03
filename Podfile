@@ -9,5 +9,10 @@ target 'Undercast' do
   pod 'SwiftMoment', '~> 0.5'
   pod 'ZFRippleButton'
   pod 'DZNEmptyDataSet'
-
+  pod 'MBProgressHUD', '~> 1.0.0'
+  pod 'SDWebImage'
+  pod 'MediaRSSParser'
+  pod 'ChameleonFramework'
+  pod 'MarkedView'
+  
 end

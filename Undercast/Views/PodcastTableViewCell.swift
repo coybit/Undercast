@@ -11,7 +11,7 @@ import UIKit
 class PodcastTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imgCover: UIImageView!
-    @IBOutlet weak var labelDescription: UITextView!
+    @IBOutlet weak var labelDescription: UILabel!
     @IBOutlet weak var labelTitle: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()

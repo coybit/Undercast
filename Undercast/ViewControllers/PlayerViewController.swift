@@ -7,146 +7,16 @@
 //
 
 import UIKit
-import AVFoundation
 import Speech;
-
-
-class UnderPlayer : NSObject {
-    
-    fileprivate var remotePlayer:AVPlayer? = nil;
-    fileprivate var localPlayer:AVAudioPlayer? = nil;
-    fileprivate var isRemote:Bool
-    
-    var isReady:Bool {
-        get {
-            
-            if !isRemote {
-                
-                if let _=localPlayer {
-                    return true;
-                }
-                else{
-                    return false;
-                }
-                
-            }
-            else {
-                
-                if let _=remotePlayer {
-                    return true;
-                }
-                else{
-                    return false;
-                }
-                
-            }
-            
-        }
-    }
-    
-    var currentTime:TimeInterval {
-        get {
-            if !isRemote {
-                return (localPlayer?.currentTime)!;
-            }
-            else {
-                return (remotePlayer?.currentTime().seconds)!;
-            }
-        }
-        
-        set {
-            if !isRemote {
-                localPlayer?.currentTime = newValue;
-            }
-            else {
-                let time = CMTimeMakeWithSeconds(newValue,1);
-                remotePlayer?.seek(to: time);
-            }
-        }
-    }
-    
-    var duration:TimeInterval {
-        get {
-            if !isRemote {
-                return (localPlayer?.duration)!;
-            }
-            else {
-                let sec = CMTimeGetSeconds((remotePlayer?.currentItem?.duration)!);
-                return sec.isNaN ? 0 : sec;
-            }
-            
-        }
-    }
-    
-    var playing:Bool {
-        get {
-            if !isRemote {
-                return (localPlayer?.isPlaying)!;
-            }
-            else {
-                if ((remotePlayer!.rate != 0) && (remotePlayer!.error == nil)) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }
-    }
-    
-    override init() {
-        isRemote = false;
-        super.init();
-    }
-    
-    init(withURL url:URL, isRemote:Bool) {
-        
-        self.isRemote = isRemote;
-        
-        if isRemote {
-    
-            let playItem = AVPlayerItem(url: url);
-            remotePlayer = AVPlayer(playerItem: playItem);
-        }
-        else {
-            
-            do{
-                try localPlayer = AVAudioPlayer(contentsOf:url);
-                localPlayer!.prepareToPlay();
-            } catch
-            {
-                
-            }
-            
-        }
-        
-    }
-
-    func play() {
-        if !isRemote {
-            localPlayer?.play();
-        }
-        else {
-            remotePlayer?.play();
-        }
-    }
-    
-    func pause() {
-        if !isRemote {
-            localPlayer?.pause();
-        }
-        else {
-            remotePlayer?.pause();
-        }
-    }
-    
-}
+import SDWebImage
+import ChameleonFramework
+import MarkedView
 
 class PlayerViewController: UITableViewController, EpisodeDelegate {
 
+    @IBOutlet weak var markdownDescription: UIMarkedView!
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var btnDownload: UIButton!
-    @IBOutlet weak var txtDescription: UITextView!
     @IBOutlet weak var btnFastBackward: UIButton!
     @IBOutlet weak var btnPlay: UIButton!
     @IBOutlet weak var imgBackground: UIImageView!
@@ -164,27 +34,35 @@ class PlayerViewController: UITableViewController, EpisodeDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+
+        self.setStatusBarStyle(UIStatusBarStyleContrast)
+        self.navigationController?.hidesNavigationBarHairline = true;
+        self.navigationController?.navigationBar.barTintColor = UIColor.flatOrange();
         
         let categoriesList = CurrentEpisode.categories;
-        let categories = categoriesList.joined(separator: ",") + "\n-------\n";
+        let categories = categoriesList.joined(separator: ",") + "\n\n";
         
         let authorsList = CurrentEpisode.authors?.map({ (a:Author) -> String in
             return "\(a.name)";
         })
-        let authors = (authorsList?.joined(separator: "\n"))! + "\n-------\n";
+        let authors = (authorsList?.joined(separator: "\n"))! + "\n\n";
         
         self.labelTitle.text = CurrentEpisode.title;
-        self.txtDescription.text = authors + categories + CurrentEpisode.text;
+        self.markdownDescription.textToMark( authors + categories + CurrentEpisode.text );
         self.btnFastBackward.transform = CGAffineTransform(rotationAngle: 3.1415);
+
+        self.imgCover.sd_setImage(with: CurrentEpisode.podcast.coverImgURL);
+        self.imgBackground.sd_setImage(with: CurrentEpisode.podcast.coverImgURL);
         
-        CurrentEpisode.delegate = self;
+        btnDownload.isEnabled = CurrentEpisode.isDownloaded();
         
-        CurrentEpisode.podcast.loadCoverImageSync { (coverImage) in
-        
-            self.imgCover.image = coverImage;
-            self.imgBackground.image = coverImage;
+        NotificationCenter.default.addObserver(forName: UCNotificationReplicationStatusDidChange, object: nil, queue: OperationQueue.main) { (notif) in
+            
+           self.btnDownload.isEnabled = self.CurrentEpisode.isDownloaded();
             
         }
+        
+        CurrentEpisode.delegate = self;
         
         initPlayer();
         
@@ -297,8 +175,7 @@ class PlayerViewController: UITableViewController, EpisodeDelegate {
 
     @IBAction func downloadDidTouch(_ sender: AnyObject) {
         
-        Downloader.sharedInstance.download(self.CurrentEpisode);
-
+        self.CurrentEpisode.download();
     }
     
     @IBAction func deleteDidTouch(_ sender: AnyObject) {
@@ -316,64 +193,5 @@ class PlayerViewController: UITableViewController, EpisodeDelegate {
         
     }
     
-    
-//    func extractTextOfEpisode() {
-//        
-//        SFSpeechRecognizer.requestAuthorization { (authState) in
-//            
-//            switch(authState) {
-//            case .authorized:
-//                    self.startEpisode2Text();
-//            default: break
-//            }
-//            
-//        }
-//        
-//    }
-//    
-//    var recognizer:SFSpeechRecognizer?;
-//    var request:SFSpeechURLRecognitionRequest?;
-//    
-//    func startEpisode2Text() {
-//        
-//        recognizer = SFSpeechRecognizer()
-//        
-//        guard recognizer != nil else {
-//            // Not supported for device's locale
-//            return
-//        }
-//        if !(recognizer?.isAvailable)! {
-//            // Not available right now
-//            return
-//        }
-//        
-//        let path = Bundle.main.path(forResource: "cast", ofType: "m4a")!;
-//        let url = URL(fileURLWithPath: path);
-//        
-//        request = SFSpeechURLRecognitionRequest(url: url)
-//        request?.shouldReportPartialResults = true
-//        recognizer?.recognitionTask(with: request!) { (result, error) in
-//            guard let result = result else {
-//                // handle error
-//                return
-//            }
-//            
-//            print("File said \(result.bestTranscription.formattedString)")
-//            
-//            if result.isFinal {
-//                print("File said \(result.bestTranscription.formattedString)")
-//            }
-//        }
-//        
-//    }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

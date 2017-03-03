@@ -9,24 +9,17 @@
 import UIKit
 import DZNEmptyDataSet
 
-class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource {
+class PodcastsManagmentViewController: UnderViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource {
 
     @IBOutlet weak var tableResults: UITableView!
     @IBOutlet weak var txtSearch: UITextField!
-    let appID = "2e498f287f7d1dd9078d8b969120a386";
-    let baseURL = "http://api.digitalpodcast.com/v2r";
-    var parser:Foundation.XMLParser = Foundation.XMLParser();
     var results:[Podcast] = [];
-    var XMLPath:[String] = [];
-    var queue:OperationQueue = OperationQueue();
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        queue.qualityOfService = .userInitiated;
-        queue.maxConcurrentOperationCount = 5;
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,12 +28,23 @@ class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITa
     }
     
 
-    @IBAction func searchBtnDidTouch(_ sender: AnyObject) {
-        search( txtSearch.text! as NSString );
+    @IBAction func searchDidTap(_ sender: Any) {
+
         results = [];
         self.tableResults.reloadData();
         txtSearch.resignFirstResponder()
+        
+        txtSearch.endEditing(true);
+        
+        let searcher = UCSearcher();
+        searcher.Seach(term: txtSearch.text!) { (results) in
+            
+            self.results = results;
+            self.tableResults.reloadData();
+            
+        }
     }
+
     /*
     // MARK: - Navigation
 
@@ -53,22 +57,10 @@ class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITa
 
     func search(_ term: NSString) {
         
-        let searchKeywords = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed);
-        let apiURL = "\(baseURL)/search/?appid=\(appID)&format=rssopml&keywords=\(searchKeywords!)"
-        
-        let url = URL(string: apiURL);
-        let task = URLSession.shared.dataTask(with: url!, completionHandler: { (data, res, err) in
-            
-            // ToDo: check for nil
-            
-            self.parser = Foundation.XMLParser(data: data!);
-            self.parser.shouldResolveExternalEntities = false;
-            self.parser.delegate = self;
-            self.parser.parse();
-            
-        }) ;
-        task.resume();
+
     }
+    
+    /// MARK: Tableview delegate and datasource
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2;
@@ -84,12 +76,30 @@ class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITa
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        
+        if section == 0 && section == 0 {
+            return 0;
+        }
+        else {
+            return 21;
+        }
+
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let header = UILabel();
-        header.text = section==0 ? "Results" : "Subscribed"
-        header.backgroundColor = UIColor.lightGray;
-        return header;
+        let headerView = UIView(frame: CGRect.zero);
+        headerView.backgroundColor = UIColor.flatGray();
+        
+        let headerLabel = UILabel(frame: CGRect(x: 10, y: 0, width: 0, height: 0));
+        headerLabel.text = section==0 ? "Results" : "Subscribed"
+        headerLabel.sizeToFit();
+        
+        headerView.addSubview(headerLabel);
+        
+        return headerView;
         
     }
     
@@ -105,23 +115,7 @@ class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITa
             // Prepare cell
             cell!.labelTitle.text = results[(indexPath as NSIndexPath).row].title as String;
             cell!.labelDescription.text = results[(indexPath as NSIndexPath).row].text as String;
-            cell!.imgCover.image = nil;
-            
-            queue.addOperation {
-                
-                self.results[(indexPath as NSIndexPath).row].loadCoverImageAsync();
-                
-                OperationQueue.main.addOperation({
-                    
-                    if let cell = self.tableResults.cellForRow(at: indexPath) {
-                        
-                        (cell as? PodcastTableViewCell)!.imgCover.image = self.results[(indexPath as NSIndexPath).row].coverImage;
-                    }
-                    
-                });
-                
-                
-            };
+            cell!.imgCover.sd_setImage(with: results[(indexPath as NSIndexPath).row].coverImgURL);
         }
         else {
             
@@ -130,28 +124,9 @@ class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITa
             
             cell!.labelTitle.text = podcast.title as String;
             cell!.labelDescription.text = podcast.text as String;
+            cell!.imgCover.sd_setImage(with: podcast.coverImgURL);
             
-            if podcast.coverImage != nil {
-                cell!.imgCover.image = podcast.coverImage;
-            }
-            else {
-                queue.addOperation {
-                    
-                    podcast.loadCoverImageAsync();
-                    
-                    OperationQueue.main.addOperation({
-                        
-                        if let cell = self.tableResults.cellForRow(at: indexPath) {
-                            
-                            (cell as? PodcastTableViewCell)!.imgCover.image = podcast.coverImage;
-                        }
-                        
-                    });
-                    
-                    
-                };
-            }
-            
+            cell?.labelDescription.sizeToFit();
         }
         
         
@@ -182,47 +157,6 @@ class PodcastsManagmentViewController: UIViewController, XMLParserDelegate, UITa
         
     }
     
-    // MARK: - NSXML Parse delegate function
-    
-    // start parsing document
-    func parserDidStartDocument(_ parser: XMLParser) {
-        // start parsing
-    }
-    
-    // element start detected
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        
-        if elementName == "outline" {
-            let podcast = Podcast();
-            podcast.title = attributeDict["text"]!;
-            podcast.link = attributeDict["xmlUrl"]!;
-            podcast.text = attributeDict["description"]!;
-            results.append(podcast);
-        }
-    }
-    
-    // characters received for some element
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-    }
-    
-    // element end detected
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-    }
-    
-    // end parsing document
-    func parserDidEndDocument(_ parser: XMLParser) {
-        
-        DispatchQueue.main.async { 
-            self.tableResults.reloadData();
-        };
-    }
-    
-    // if any error detected while parsing.
-    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        
-        NSLog("Error");
-        
-    }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
