@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UCSearcher: NSObject, XMLParserDelegate {
+public class UCSearcher: NSObject, XMLParserDelegate {
     
     let appID = "2e498f287f7d1dd9078d8b969120a386";
     let baseURL = "http://api.digitalpodcast.com/v2r";
@@ -20,7 +20,7 @@ class UCSearcher: NSObject, XMLParserDelegate {
     
     
     
-    func Seach(term:String, callback:@escaping ([Podcast])->Void ) {
+    public func Seach(term:String, callback:@escaping ([Podcast])->Void ) {
         
         self.callback = callback;
         

@@ -11,7 +11,7 @@ import CoreData;
 
 let UCNotificationSubscribtionsListDidChange = NSNotification.Name(rawValue: "subscribtionsListDidChange");
 
-class Podcast: NSObject {
+public class Podcast: NSObject {
     
     var title:String = "";
     var link:String = "";
