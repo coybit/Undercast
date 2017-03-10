@@ -14,7 +14,7 @@ protocol EpisodeDelegate : class {
 
 let UCNotificationReplicationStatusDidChange = NSNotification.Name(rawValue: "ReplicationStatusDidChange");
 
-class Episode: NSObject {
+public class Episode: NSObject {
 
     var title = "";
     var path = "";

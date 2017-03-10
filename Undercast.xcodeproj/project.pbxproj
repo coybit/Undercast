@@ -41,6 +41,7 @@
 		B461F0FE1E6F30B000DF688B /* EpisodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0E41E6F30B000DF688B /* EpisodeTableViewCell.swift */; };
 		B461F0FF1E6F30B000DF688B /* PodcastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0E51E6F30B000DF688B /* PodcastTableViewCell.swift */; };
 		B461F1071E6F331800DF688B /* UndercastTestSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F1061E6F331800DF688B /* UndercastTestSearch.swift */; };
+		B461F10F1E7072DC00DF688B /* UndercastTestPodcasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F10E1E7072DC00DF688B /* UndercastTestPodcasts.swift */; };
 		B48FB6BC1E65E0C100FB8B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B48FB6901E65E0C100FB8B75 /* Assets.xcassets */; };
 		B48FB6BF1E65E0C100FB8B75 /* 99invisible-logo-300.png in Resources */ = {isa = PBXBuildFile; fileRef = B48FB6981E65E0C100FB8B75 /* 99invisible-logo-300.png */; };
 		B48FB6CE1E65E0C100FB8B75 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B48FB6AC1E65E0C100FB8B75 /* Info.plist */; };
@@ -99,6 +100,7 @@
 		B461F1041E6F331800DF688B /* UndercastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UndercastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B461F1061E6F331800DF688B /* UndercastTestSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndercastTestSearch.swift; sourceTree = "<group>"; };
 		B461F1081E6F331800DF688B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B461F10E1E7072DC00DF688B /* UndercastTestPodcasts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UndercastTestPodcasts.swift; sourceTree = "<group>"; };
 		B48FB6901E65E0C100FB8B75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B48FB6981E65E0C100FB8B75 /* 99invisible-logo-300.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "99invisible-logo-300.png"; sourceTree = "<group>"; };
 		B48FB6AC1E65E0C100FB8B75 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			children = (
 				B461F1061E6F331800DF688B /* UndercastTestSearch.swift */,
 				B461F1081E6F331800DF688B /* Info.plist */,
+				B461F10E1E7072DC00DF688B /* UndercastTestPodcasts.swift */,
 			);
 			path = UndercastTests;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B461F10F1E7072DC00DF688B /* UndercastTestPodcasts.swift in Sources */,
 				B461F1071E6F331800DF688B /* UndercastTestSearch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

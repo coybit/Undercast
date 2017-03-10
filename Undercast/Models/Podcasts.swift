@@ -9,7 +9,7 @@
 import UIKit
 import CoreData;
 
-class Podcasts: NSObject {
+public class Podcasts: NSObject {
 
     var episodes: [Episode];
     var filteredEpisodes: [Episode];
@@ -18,7 +18,7 @@ class Podcasts: NSObject {
     private var subscribedPodcastsList:[Podcast] = [];
     static let shared = Podcasts();
     
-    override init() {
+    public override init() {
         
         episodes = [];
         filteredEpisodes = [];
@@ -27,15 +27,15 @@ class Podcasts: NSObject {
         filterMaxTime = Int.max;
     }
     
-    func numberOfEpisodes() -> Int {
+    public func numberOfEpisodes() -> Int {
         return filteredEpisodes.count;
     }
     
-    func numberOfSubscribedPodcasts() -> Int {
+    public func numberOfSubscribedPodcasts() -> Int {
         return subscribedPodcastsList.count;
     }
     
-    func setFilter(_ minTime:Int, maxTime:Int) {
+    public func setFilter(_ minTime:Int, maxTime:Int) {
         filterMinTime = minTime;
         filterMaxTime = maxTime;
         
@@ -69,7 +69,7 @@ class Podcasts: NSObject {
         };
     }
     
-    func episodeAtIndex(_ index: Int) -> Episode? {
+    public func episodeAtIndex(_ index: Int) -> Episode? {
         
         if index >= filteredEpisodes.count {
             return nil;
@@ -79,7 +79,7 @@ class Podcasts: NSObject {
         }
     }
     
-    func loadSubscribedPodcast(callback:@escaping (()->Void)) {
+    public func loadSubscribedPodcast(callback:@escaping (()->Void)) {
         
         let queue = OperationQueue();
         
@@ -116,11 +116,11 @@ class Podcasts: NSObject {
         
     }
     
-    func podcastAtIndex(index:Int) -> Podcast {
+    public func podcastAtIndex(index:Int) -> Podcast {
         return subscribedPodcastsList[index];
     }
     
-    func subscribedPodcasts() -> [Podcast] {
+    public func subscribedPodcasts() -> [Podcast] {
         
         guard let moc = managedObjectContext() else {
             return [];
