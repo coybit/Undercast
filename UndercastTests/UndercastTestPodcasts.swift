@@ -38,6 +38,28 @@ class UndercastTestPodcasts: XCTestCase {
             }
         }
     }
+    
+    func testSubscribing() {
+        
+        let podcast = Podcast();
+        podcast.title = "TestPodcast";
+        podcast.link = "http://www.example.com";
+        podcast.text = "Nothing";
+        
+        let podcasts = Podcasts();
+        
+        let n = podcasts.numberOfSubscribedPodcasts();
+        
+        XCTAssertEqual( podcast.isSubscribed(), false );
+        
+        XCTAssertEqual( podcast.subscribe(), true );
+        
+        XCTAssertEqual(podcast.isSubscribed(), true );
+        
+        let m = podcasts.numberOfSubscribedPodcasts();
+        
+        XCTAssertEqual(n, m);
+    }
 
     
 }

@@ -13,16 +13,16 @@ let UCNotificationSubscribtionsListDidChange = NSNotification.Name(rawValue: "su
 
 public class Podcast: NSObject {
     
-    var title:String = "";
-    var link:String = "";
-    var text:String = "";
-    var foundCoverImgURL:String?;
-    var episodes:[Episode] = [];
-    var lastFeed:String = "";
-    static let lockQueue = DispatchQueue(label: "com.test.LockQueue", attributes: [])
-    static let downloadQueue = OperationQueue();
+    public var title:String = "";
+    public var link:String = "";
+    public var text:String = "";
+    private var foundCoverImgURL:String?;
+    public var episodes:[Episode] = [];
+    public var lastFeed:String = "";
+    private static let lockQueue = DispatchQueue(label: "com.test.LockQueue", attributes: [])
+    private static let downloadQueue = OperationQueue();
     
-    func addEpisode(episode:Episode) {
+    public func addEpisode(episode:Episode) {
         
         let has = episodes.contains { (e) -> Bool in
             return e.path == episode.path;
@@ -159,7 +159,7 @@ public class Podcast: NSObject {
         
     }
     
-    func isSubscribed() -> Bool {
+    public func isSubscribed() -> Bool {
         
         guard let moc = managedObjectContext() else {
             return false;
@@ -176,11 +176,14 @@ public class Podcast: NSObject {
         return false;
     }
     
-    
-    func subscribe() {
+    public func subscribe() -> Bool {
+        
+        if isSubscribed() == true {
+            return true;
+        }
         
         guard let moc = managedObjectContext() else {
-            return;
+            return false;
         }
         
         let p:EntitySubscribedPodcast = NSManagedObject(entity: entityDescription()!, insertInto: managedObjectContext()!) as! EntitySubscribedPodcast;
@@ -190,13 +193,16 @@ public class Podcast: NSObject {
         p.setValue(self.link, forKey: "pfeedUrl");
         
         do { try moc.save(); }
-        catch {}
+        catch {
+            return false;
+        }
         
         NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
+        
+        return true;
     }
     
-    
-    func unsubscribe() {
+    public func unsubscribe() {
         
         guard let moc = managedObjectContext() else {
             return;
