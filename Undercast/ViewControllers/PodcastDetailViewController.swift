@@ -56,11 +56,11 @@ class PodcastDetailViewController: UnderViewController, UITableViewDelegate, UIT
 
     @IBAction func subscribeDidTouch(_ sender: AnyObject) {
 
-        if podcast!.isSubscribed() {
-            podcast!.unsubscribe();
+        if podcasts.isSubscribed(podcast: podcast!) {
+            podcasts.unsubscribe(podcast: podcast!);
         }
         else {
-            podcast!.subscribe();
+            podcasts.subscribe(podcast: podcast!);
         }
         
         loadDynamicLabels();
@@ -68,7 +68,7 @@ class PodcastDetailViewController: UnderViewController, UITableViewDelegate, UIT
     
     func loadDynamicLabels() {
         
-        if podcast!.isSubscribed() {
+        if podcasts.isSubscribed(podcast: podcast!) {
             self.btnSubscribe.setTitle("Unsubscribe", for: UIControlState() );
         }
         else {

@@ -50,16 +50,25 @@ class UndercastTestPodcasts: XCTestCase {
         
         let n = podcasts.numberOfSubscribedPodcasts();
         
-        XCTAssertEqual( podcast.isSubscribed(), false );
+        XCTAssertEqual( podcasts.isSubscribed(podcast: podcast), false );
         
-        XCTAssertEqual( podcast.subscribe(), true );
+        XCTAssertEqual( podcasts.subscribe(podcast: podcast), true );
         
-        XCTAssertEqual(podcast.isSubscribed(), true );
+        XCTAssertEqual(podcasts.isSubscribed(podcast: podcast), true );
         
         let m = podcasts.numberOfSubscribedPodcasts();
         
-        XCTAssertEqual(n, m);
+        XCTAssertNotEqual(n, m);
+        
+        XCTAssertEqual( podcasts.unsubscribe(podcast: podcast), true );
+        
+        let p = podcasts.numberOfSubscribedPodcasts();
+        
+        XCTAssertEqual(n, p);
     }
-
+    
+    func testAddingEpisode() {
+        
+    }
     
 }

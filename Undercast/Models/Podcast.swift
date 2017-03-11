@@ -158,73 +158,7 @@ public class Podcast: NSObject {
     func cancelLoadingImage() {
         
     }
-    
-    public func isSubscribed() -> Bool {
         
-        guard let moc = managedObjectContext() else {
-            return false;
-        }
-        
-        let fetch:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "EntitySubscribedPodcast");
-        fetch.predicate = NSPredicate(format: "pfeedUrl=%@", link);
-        
-        do {
-            let results = try moc.fetch(fetch);
-            return results.count > 0;
-        } catch {}
-        
-        return false;
-    }
-    
-    public func subscribe() -> Bool {
-        
-        if isSubscribed() == true {
-            return true;
-        }
-        
-        guard let moc = managedObjectContext() else {
-            return false;
-        }
-        
-        let p:EntitySubscribedPodcast = NSManagedObject(entity: entityDescription()!, insertInto: managedObjectContext()!) as! EntitySubscribedPodcast;
-        
-        p.setValue(self.title, forKey: "ptitle");
-        p.setValue(self.text, forKey: "pdescription");
-        p.setValue(self.link, forKey: "pfeedUrl");
-        
-        do { try moc.save(); }
-        catch {
-            return false;
-        }
-        
-        NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
-        
-        return true;
-    }
-    
-    public func unsubscribe() {
-        
-        guard let moc = managedObjectContext() else {
-            return;
-        }
-        
-        let fetch:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "EntitySubscribedPodcast");
-        fetch.predicate = NSPredicate(format: "pfeedUrl=%@", self.link);
-        
-        do {
-            let results = try moc.fetch(fetch) as! [NSManagedObject];
-            
-            for r in results {
-                moc.delete(r);
-            }
-            
-            try moc.save();
-            
-        } catch {}
-        
-        NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
-    }
-    
     func managedObjectContext() -> NSManagedObjectContext? {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate;

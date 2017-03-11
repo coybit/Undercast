@@ -15,7 +15,7 @@ public class Podcasts: NSObject {
     var filteredEpisodes: [Episode];
     var filterMinTime: Int;
     var filterMaxTime: Int;
-    private var subscribedPodcastsList:[Podcast] = [];
+    private var cachedSubscribedPodcastsList:[Podcast] = [];
     static let shared = Podcasts();
     
     public override init() {
@@ -32,7 +32,7 @@ public class Podcasts: NSObject {
     }
     
     public func numberOfSubscribedPodcasts() -> Int {
-        return subscribedPodcastsList.count;
+        return cachedSubscribedPodcastsList.count;
     }
     
     public func setFilter(_ minTime:Int, maxTime:Int) {
@@ -41,7 +41,7 @@ public class Podcasts: NSObject {
         
         filteredEpisodes.removeAll();
         
-        for pod in subscribedPodcastsList {
+        for pod in cachedSubscribedPodcastsList {
         
             for eps in pod.episodes {
                 
@@ -86,8 +86,8 @@ public class Podcasts: NSObject {
         queue.qualityOfService = .userInitiated;
         queue.maxConcurrentOperationCount = 4;
         
-        subscribedPodcastsList = subscribedPodcasts();
-        var remaindedPodcast = subscribedPodcastsList.count;
+        cachedSubscribedPodcastsList = subscribedPodcasts();
+        var remaindedPodcast = cachedSubscribedPodcastsList.count;
         
         if remaindedPodcast == 0 {
             callback();
@@ -96,7 +96,7 @@ public class Podcasts: NSObject {
             
             let semaphore = DispatchSemaphore(value: 1);
             
-            for podcast in subscribedPodcastsList {
+            for podcast in cachedSubscribedPodcastsList {
                 
                 queue.addOperation({
                     
@@ -117,7 +117,7 @@ public class Podcasts: NSObject {
     }
     
     public func podcastAtIndex(index:Int) -> Podcast {
-        return subscribedPodcastsList[index];
+        return cachedSubscribedPodcastsList[index];
     }
     
     public func subscribedPodcasts() -> [Podcast] {
@@ -126,7 +126,7 @@ public class Podcasts: NSObject {
             return [];
         }
         
-        subscribedPodcastsList = [];
+        cachedSubscribedPodcastsList = [];
         
         let fetch:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "EntitySubscribedPodcast");
         
@@ -139,12 +139,88 @@ public class Podcasts: NSObject {
                 p.text = r.pdescription!;
                 p.link = r.pfeedUrl!;
                 p.lastFeed = r.plastfeed ?? "";
-                subscribedPodcastsList.append(p);
+                cachedSubscribedPodcastsList.append(p);
             }
             
         } catch {}
         
-        return subscribedPodcastsList;
+        return cachedSubscribedPodcastsList;
+    }
+    
+    public func isSubscribed(podcast:Podcast) -> Bool {
+        
+        guard let moc = managedObjectContext() else {
+            return false;
+        }
+        
+        let fetch:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "EntitySubscribedPodcast");
+        fetch.predicate = NSPredicate(format: "pfeedUrl=%@", podcast.link);
+        
+        do {
+            let results = try moc.fetch(fetch);
+            return results.count > 0;
+        } catch {}
+        
+        return false;
+    }
+    
+    public func subscribe(podcast:Podcast) -> Bool {
+        
+        if isSubscribed(podcast: podcast) == true {
+            return true;
+        }
+        
+        guard let moc = managedObjectContext() else {
+            return false;
+        }
+        
+        let p:EntitySubscribedPodcast = NSManagedObject(entity: entityDescription()!, insertInto: managedObjectContext()!) as! EntitySubscribedPodcast;
+        
+        p.setValue(podcast.title, forKey: "ptitle");
+        p.setValue(podcast.text, forKey: "pdescription");
+        p.setValue(podcast.link, forKey: "pfeedUrl");
+        
+        do { try moc.save(); }
+        catch {
+            return false;
+        }
+        
+        NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
+        
+        cachedSubscribedPodcastsList.append(podcast);
+        
+        return true;
+    }
+    
+    public func unsubscribe(podcast:Podcast) -> Bool {
+        
+        guard let moc = managedObjectContext() else {
+            return false;
+        }
+        
+        let fetch:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "EntitySubscribedPodcast");
+        fetch.predicate = NSPredicate(format: "pfeedUrl=%@", podcast.link);
+        
+        do {
+            let results = try moc.fetch(fetch) as! [NSManagedObject];
+            
+            for r in results {
+                moc.delete(r);
+            }
+            
+            try moc.save();
+            
+        } catch {
+            return false;
+        }
+        
+        NotificationCenter.default.post(name: UCNotificationSubscribtionsListDidChange, object: nil);
+        
+        if let idx = cachedSubscribedPodcastsList.index(of: podcast) {
+            cachedSubscribedPodcastsList.remove(at: idx);
+        }
+        
+        return true;
     }
     
     func managedObjectContext() -> NSManagedObjectContext? {
