@@ -10,7 +10,7 @@ import UIKit
 
 let NCDownloadListDidChange = "DLDC";
 
-enum DownloadStatus : String {
+public enum DownloadStatus : String {
     case Not = "Not"
     case Downloading = "Downloading"
     case Failed = "Failed"

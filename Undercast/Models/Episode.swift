@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol EpisodeDelegate : class {
+public protocol EpisodeDelegate : class {
     func episodeDownloadingDidFinsh(_ error:NSError?);
 }
 
@@ -16,22 +16,23 @@ let UCNotificationReplicationStatusDidChange = NSNotification.Name(rawValue: "Re
 
 public class Episode: NSObject {
 
-    var title = "";
-    var path = "";
-    var podcast:Podcast;
-    var duration:Int;
-    var text = "";
-    var authors:[Author]?;
-    var categories:[String] = []
-    var publishDate:Date?;
+    public var title = "";
+    public var path = "";
+    public var podcast:Podcast;
+    public var duration:Int;
+    public var text = "";
+    public var authors:[Author]?;
+    public var categories:[String] = []
+    public var publishDate:Date?;
     
-    var downloadProgress:Float = 0;
-    var downloadingStatus:DownloadStatus;
-    var downloadID:String?;
-    weak var delegate:EpisodeDelegate?;
+    public var downloadProgress:Float = 0;
+    public var downloadingStatus:DownloadStatus;
+    public var downloadID:String?;
+    
+    public weak var delegate:EpisodeDelegate?;
     
     
-    override init() {
+    public override init() {
         
         title = "";
         podcast = Podcast();

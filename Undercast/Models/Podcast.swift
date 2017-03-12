@@ -151,8 +151,6 @@ public class Podcast: NSObject {
             
         }
         
-        //            return URL(string: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png")!;
-        
     }
     
     func cancelLoadingImage() {

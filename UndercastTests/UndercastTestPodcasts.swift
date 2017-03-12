@@ -69,6 +69,29 @@ class UndercastTestPodcasts: XCTestCase {
     
     func testAddingEpisode() {
         
+        let podcast = Podcast();
+        podcast.title = "TestPodcast";
+        podcast.link = "http://www.example.com";
+        podcast.text = "Nothing";
+    
+        let e = Episode();
+        e.podcast = podcast;
+        e.title = "Title 1";
+        e.text = "Description 111";
+        e.duration = 100;
+        e.path = "none";
+        e.authors = nil;
+        e.categories = ["none"];
+        e.publishDate = Date();
+        
+        let n = podcast.episodes.count;
+        
+        podcast.addEpisode(episode: e);
+    
+        let m = podcast.episodes.count;
+        
+        XCTAssertEqual(m, n+1);
+    
     }
     
 }
