@@ -78,7 +78,7 @@
 		B461F0CB1E6F30B000DF688B /* Muon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Muon.h; sourceTree = "<group>"; };
 		B461F0CC1E6F30B000DF688B /* String+Muon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Muon.swift"; sourceTree = "<group>"; };
 		B461F0CD1E6F30B000DF688B /* XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParser.swift; sourceTree = "<group>"; };
-		B461F0CF1E6F30B000DF688B /* UCSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UCSearcher.swift; path = ../Service/UCSearcher.swift; sourceTree = "<group>"; };
+		B461F0CF1E6F30B000DF688B /* UCSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCSearcher.swift; sourceTree = "<group>"; };
 		B461F0D11E6F30B000DF688B /* UCDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCDownloader.swift; sourceTree = "<group>"; };
 		B461F0D21E6F30B000DF688B /* UCPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCPlayer.swift; sourceTree = "<group>"; };
 		B461F0D31E6F30B000DF688B /* UCUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCUtilities.swift; sourceTree = "<group>"; };
@@ -88,12 +88,12 @@
 		B461F0D81E6F30B000DF688B /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		B461F0D91E6F30B000DF688B /* Podcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 		B461F0DA1E6F30B000DF688B /* Podcasts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Podcasts.swift; sourceTree = "<group>"; };
-		B461F0DC1E6F30B000DF688B /* DownloadsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadsTableViewController.swift; path = ../ViewControllers/DownloadsTableViewController.swift; sourceTree = "<group>"; };
-		B461F0DD1E6F30B000DF688B /* PickViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PickViewController.swift; path = ../ViewControllers/PickViewController.swift; sourceTree = "<group>"; };
-		B461F0DE1E6F30B000DF688B /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerViewController.swift; path = ../ViewControllers/PlayerViewController.swift; sourceTree = "<group>"; };
-		B461F0DF1E6F30B000DF688B /* PodcastDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PodcastDetailViewController.swift; path = ../ViewControllers/PodcastDetailViewController.swift; sourceTree = "<group>"; };
-		B461F0E01E6F30B000DF688B /* PodcastsManagmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PodcastsManagmentViewController.swift; path = ../ViewControllers/PodcastsManagmentViewController.swift; sourceTree = "<group>"; };
-		B461F0E11E6F30B000DF688B /* UnderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnderViewController.swift; path = ../ViewControllers/UnderViewController.swift; sourceTree = "<group>"; };
+		B461F0DC1E6F30B000DF688B /* DownloadsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadsTableViewController.swift; sourceTree = "<group>"; };
+		B461F0DD1E6F30B000DF688B /* PickViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickViewController.swift; sourceTree = "<group>"; };
+		B461F0DE1E6F30B000DF688B /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		B461F0DF1E6F30B000DF688B /* PodcastDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastDetailViewController.swift; sourceTree = "<group>"; };
+		B461F0E01E6F30B000DF688B /* PodcastsManagmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastsManagmentViewController.swift; sourceTree = "<group>"; };
+		B461F0E11E6F30B000DF688B /* UnderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderViewController.swift; sourceTree = "<group>"; };
 		B461F0E31E6F30B000DF688B /* DownloadTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTableViewCell.swift; sourceTree = "<group>"; };
 		B461F0E41E6F30B000DF688B /* EpisodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeTableViewCell.swift; sourceTree = "<group>"; };
 		B461F0E51E6F30B000DF688B /* PodcastTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastTableViewCell.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				B461F0C41E6F30B000DF688B /* 3rdParty */,
 				B461F0D01E6F30B000DF688B /* Helper */,
 				B461F0D51E6F30B000DF688B /* Models */,
-				B461F0DB1E6F30B000DF688B /* ViewModel */,
+				B461F0DB1E6F30B000DF688B /* Controller */,
 				B461F0E21E6F30B000DF688B /* Views */,
 				B48FB6901E65E0C100FB8B75 /* Assets.xcassets */,
 				B48FB6AB1E65E0C100FB8B75 /* Resource */,
@@ -238,13 +238,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B461F0DB1E6F30B000DF688B /* ViewModel */ = {
+		B461F0DB1E6F30B000DF688B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				B461F0CF1E6F30B000DF688B /* UCSearcher.swift */,
 			);
-			name = ViewModel;
-			path = ViewControllers;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		B461F0E21E6F30B000DF688B /* Views */ = {
