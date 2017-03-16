@@ -10,6 +10,7 @@ def sharedPods
     pod 'MediaRSSParser'
     pod 'ChameleonFramework'
     pod 'MarkedView'
+    #pod 'RealmSwift'
 end
 
 target 'Undercast' do

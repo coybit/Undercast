@@ -41,7 +41,7 @@ public class Episode: NSObject {
         
     }
     
-    func localPath() -> URL? {
+    public func localPath() -> URL? {
         let hash = self.path.md5();
         let filePath = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(hash)
         return filePath;
@@ -51,7 +51,7 @@ public class Episode: NSObject {
         UCDownloader.sharedInstance.download(self);
     }
     
-    func isDownloaded() -> Bool {
+    public func isDownloaded() -> Bool {
         
         let filePath = localPath();
         

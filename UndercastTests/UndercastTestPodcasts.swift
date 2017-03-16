@@ -11,9 +11,26 @@ import Undercast
 
 class UndercastTestPodcasts: XCTestCase {
     
+    var stubPodcast:Podcast!;
+    var stubEpisode:Episode!;
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        stubPodcast = Podcast();
+        stubPodcast.title = "TestPodcast";
+        stubPodcast.link = "http://www.example.com/\(arc4random())";
+        stubPodcast.text = "Nothing";
+
+        stubEpisode = Episode();
+        stubEpisode.podcast = stubPodcast;
+        stubEpisode.title = "Title 1";
+        stubEpisode.text = "Description 111";
+        stubEpisode.duration = 100;
+        stubEpisode.path = "none";
+        stubEpisode.authors = nil;
+        stubEpisode.categories = ["none"];
+        stubEpisode.publishDate = Date();
     }
     
     override func tearDown() {
@@ -31,7 +48,7 @@ class UndercastTestPodcasts: XCTestCase {
             asyncExpectation.fulfill();
             
         }
-
+        
         waitForExpectations(timeout: 5) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
@@ -41,26 +58,21 @@ class UndercastTestPodcasts: XCTestCase {
     
     func testSubscribing() {
         
-        let podcast = Podcast();
-        podcast.title = "TestPodcast";
-        podcast.link = "http://www.example.com";
-        podcast.text = "Nothing";
-        
         let podcasts = Podcasts();
         
         let n = podcasts.numberOfSubscribedPodcasts();
         
-        XCTAssertEqual( podcasts.isSubscribed(podcast: podcast), false );
+        XCTAssertEqual( podcasts.isSubscribed(podcast: stubPodcast), false );
         
-        XCTAssertEqual( podcasts.subscribe(podcast: podcast), true );
+        XCTAssertEqual( podcasts.subscribe(podcast: stubPodcast), true );
         
-        XCTAssertEqual(podcasts.isSubscribed(podcast: podcast), true );
+        XCTAssertEqual(podcasts.isSubscribed(podcast: stubPodcast), true );
         
         let m = podcasts.numberOfSubscribedPodcasts();
         
         XCTAssertNotEqual(n, m);
         
-        XCTAssertEqual( podcasts.unsubscribe(podcast: podcast), true );
+        XCTAssertEqual( podcasts.unsubscribe(podcast: stubPodcast), true );
         
         let p = podcasts.numberOfSubscribedPodcasts();
         
@@ -69,29 +81,27 @@ class UndercastTestPodcasts: XCTestCase {
     
     func testAddingEpisode() {
         
-        let podcast = Podcast();
-        podcast.title = "TestPodcast";
-        podcast.link = "http://www.example.com";
-        podcast.text = "Nothing";
-    
-        let e = Episode();
-        e.podcast = podcast;
-        e.title = "Title 1";
-        e.text = "Description 111";
-        e.duration = 100;
-        e.path = "none";
-        e.authors = nil;
-        e.categories = ["none"];
-        e.publishDate = Date();
+        let n = stubPodcast.episodes.count;
         
-        let n = podcast.episodes.count;
+        stubPodcast.addEpisode(episode: stubEpisode);
         
-        podcast.addEpisode(episode: e);
-    
-        let m = podcast.episodes.count;
+        let m = stubPodcast.episodes.count;
         
         XCTAssertEqual(m, n+1);
-    
+        
+        let podcasts = Podcasts();
+        
+        XCTAssertTrue(podcasts.subscribe(podcast: stubPodcast));
+        
+        podcasts.setFilter(0, maxTime: 10000);
+        
+        XCTAssertGreaterThanOrEqual(podcasts.numberOfSubscribedPodcasts(),1);
+        XCTAssertGreaterThanOrEqual(podcasts.numberOfEpisodes(),1);
+        
+        let episode = podcasts.episodeAtIndex(0);
+        
+        XCTAssertNotNil(episode);
+        
+        XCTAssertNotNil(episode?.localPath());
     }
-    
 }
