@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor.orange;
         UINavigationBar.appearance().tintColor = UIColor.black;
         
+        // Configure TabbarViewController
         let tabBarController = self.window?.rootViewController as! UITabBarController;
         
         let btnSize = CGSize(width: 24, height: 24);
