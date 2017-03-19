@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class UCDigitalPodcastSearcher: NSObject, UCSearcher, XMLParserDelegate {
+public class UCDigitalPodcastSearcher: NSObject, UCSearcher {
     
     let appID = "2e498f287f7d1dd9078d8b969120a386";
     let baseURL = "http://api.digitalpodcast.com/v2r";
@@ -17,8 +17,6 @@ public class UCDigitalPodcastSearcher: NSObject, UCSearcher, XMLParserDelegate {
     var XMLPath:[String] = [];
     var queue:OperationQueue = OperationQueue();
     var callback:(([Podcast])->Void)!;
-    
-    
     
     public func Seach(term:String, callback:@escaping ([Podcast])->Void ) {
         
@@ -33,7 +31,7 @@ public class UCDigitalPodcastSearcher: NSObject, UCSearcher, XMLParserDelegate {
         
     }
 
-    func requestForSearch(term:String) {
+    private func requestForSearch(term:String) {
         
         let searchKeywords = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed);
         let apiURL = "\(baseURL)/search/?appid=\(appID)&format=rssopml&keywords=\(searchKeywords!)"
@@ -55,6 +53,9 @@ public class UCDigitalPodcastSearcher: NSObject, UCSearcher, XMLParserDelegate {
         task.resume();
         
     }
+}
+
+extension UCDigitalPodcastSearcher: XMLParserDelegate {
     
     // MARK: - NSXML Parse delegate function
     
