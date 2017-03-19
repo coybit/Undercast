@@ -11,6 +11,7 @@ import CoreData;
 
 public class Podcasts: NSObject {
 
+    var isReady = false;
     var episodes: [Episode];
     var filteredEpisodes: [Episode];
     var filterMinTime: Int;
@@ -28,14 +29,20 @@ public class Podcasts: NSObject {
     }
     
     public func numberOfEpisodes() -> Int {
+        checkForBeingReady();
+        
         return filteredEpisodes.count;
     }
     
     public func numberOfSubscribedPodcasts() -> Int {
+        checkForBeingReady();
+        
         return cachedSubscribedPodcastsList.count;
     }
     
-    public func setFilter(_ minTime:Int, maxTime:Int) {
+    public func setFilter(minTime:Int, maxTime:Int) {
+        checkForBeingReady();
+        
         filterMinTime = minTime;
         filterMaxTime = maxTime;
         
@@ -70,6 +77,7 @@ public class Podcasts: NSObject {
     }
     
     public func episodeAtIndex(_ index: Int) -> Episode? {
+        checkForBeingReady();
         
         if index >= filteredEpisodes.count {
             return nil;
@@ -79,49 +87,14 @@ public class Podcasts: NSObject {
         }
     }
     
-    public func loadSubscribedPodcast(callback:@escaping (()->Void)) {
-        
-        let queue = OperationQueue();
-        
-        queue.qualityOfService = .userInitiated;
-        queue.maxConcurrentOperationCount = 4;
-        
-        cachedSubscribedPodcastsList = subscribedPodcasts();
-        var remaindedPodcast = cachedSubscribedPodcastsList.count;
-        
-        if remaindedPodcast == 0 {
-            callback();
-        }
-        else {
-            
-            let semaphore = DispatchSemaphore(value: 1);
-            
-            for podcast in cachedSubscribedPodcastsList {
-                
-                queue.addOperation({
-                    
-                    podcast.load();
-                    
-                    semaphore.wait();
-                    remaindedPodcast -= 1;
-                    if remaindedPodcast <= 0 {
-                        callback();
-                    }
-                    semaphore.signal();
-                });
-                
-            }
-            
-        }
-        
-    }
-    
     public func podcastAtIndex(index:Int) -> Podcast {
+        checkForBeingReady();
+        
         return cachedSubscribedPodcastsList[index];
     }
     
-    public func subscribedPodcasts() -> [Podcast] {
-        
+    private func subscribedPodcasts() -> [Podcast] {
+
         guard let moc = managedObjectContext() else {
             return [];
         }
@@ -148,7 +121,7 @@ public class Podcasts: NSObject {
     }
     
     public func isSubscribed(podcast:Podcast) -> Bool {
-        
+
         guard let moc = managedObjectContext() else {
             return false;
         }
@@ -165,7 +138,7 @@ public class Podcasts: NSObject {
     }
     
     public func subscribe(podcast:Podcast) -> Bool {
-        
+
         if isSubscribed(podcast: podcast) == true {
             return true;
         }
@@ -193,6 +166,7 @@ public class Podcasts: NSObject {
     }
     
     public func unsubscribe(podcast:Podcast) -> Bool {
+        checkForBeingReady();
         
         guard let moc = managedObjectContext() else {
             return false;
@@ -221,6 +195,49 @@ public class Podcasts: NSObject {
         }
         
         return true;
+    }
+    
+    private func checkForBeingReady() {
+        assert(isReady, "You have to call loadSubscribedPodcast and wait till it calls your callback");
+    }
+    
+    public func loadSubscribedPodcast(callback:@escaping (()->Void)) {
+        
+        let queue = OperationQueue();
+        
+        queue.qualityOfService = .userInitiated;
+        queue.maxConcurrentOperationCount = 4;
+        
+        cachedSubscribedPodcastsList = subscribedPodcasts();
+        var remaindedPodcast = cachedSubscribedPodcastsList.count;
+        
+        if remaindedPodcast == 0 {
+            isReady = true;
+            callback();
+        }
+        else {
+            
+            let semaphore = DispatchSemaphore(value: 1);
+            
+            for podcast in cachedSubscribedPodcastsList {
+                
+                queue.addOperation({
+                    
+                    podcast.load();
+                    
+                    semaphore.wait();
+                    remaindedPodcast -= 1;
+                    if remaindedPodcast <= 0 {
+                        self.isReady = true;
+                        callback();
+                    }
+                    semaphore.signal();
+                });
+                
+            }
+            
+        }
+        
     }
     
     func managedObjectContext() -> NSManagedObjectContext? {

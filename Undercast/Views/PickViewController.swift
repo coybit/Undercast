@@ -74,7 +74,7 @@ class PickViewController: UnderViewController, UITableViewDelegate, UITableViewD
     func updateList() {
         let time = self.convertSliderToMinute();
         let sec = time.min * 60 + time.sec;
-        podcasts.setFilter(Int(sec - 0.5 * sec), maxTime: Int(sec + 0.5 * sec) );
+        podcasts.setFilter(minTime: Int(sec - 0.5 * sec), maxTime: Int(sec + 0.5 * sec) );
         self.tableEpisodes.reloadData();
     }
     
