@@ -14,6 +14,7 @@
 		851412AB1D83232B0041B222 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 851412A91D83232B0041B222 /* Main.storyboard */; };
 		851412B31D83232B0041B222 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 851412B11D83232B0041B222 /* LaunchScreen.storyboard */; };
 		857FFF931D9985BA002A7D60 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 857FFF921D9985BA002A7D60 /* Speech.framework */; };
+		B45C8F361E7E50D700889130 /* UCSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C8F351E7E50D600889130 /* UCSearcher.swift */; };
 		B461F0E61E6F30B000DF688B /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0C61E6F30B000DF688B /* Article.swift */; };
 		B461F0E71E6F30B000DF688B /* Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0C71E6F30B000DF688B /* Author.swift */; };
 		B461F0E81E6F30B000DF688B /* Enclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0C81E6F30B000DF688B /* Enclosure.swift */; };
@@ -21,7 +22,7 @@
 		B461F0EA1E6F30B000DF688B /* FeedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0CA1E6F30B000DF688B /* FeedParser.swift */; };
 		B461F0EB1E6F30B000DF688B /* String+Muon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0CC1E6F30B000DF688B /* String+Muon.swift */; };
 		B461F0EC1E6F30B000DF688B /* XMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0CD1E6F30B000DF688B /* XMLParser.swift */; };
-		B461F0ED1E6F30B000DF688B /* UCSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0CF1E6F30B000DF688B /* UCSearcher.swift */; };
+		B461F0ED1E6F30B000DF688B /* UCDigitialPodcastSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0CF1E6F30B000DF688B /* UCDigitialPodcastSearcher.swift */; };
 		B461F0EE1E6F30B000DF688B /* UCDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0D11E6F30B000DF688B /* UCDownloader.swift */; };
 		B461F0EF1E6F30B000DF688B /* UCPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0D21E6F30B000DF688B /* UCPlayer.swift */; };
 		B461F0F01E6F30B000DF688B /* UCUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B461F0D31E6F30B000DF688B /* UCUtilities.swift */; };
@@ -71,6 +72,7 @@
 		851412B21D83232B0041B222 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		857FFF921D9985BA002A7D60 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		9D304C26DD78C5745F5726B6 /* Pods-Undercast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Undercast.release.xcconfig"; path = "Pods/Target Support Files/Pods-Undercast/Pods-Undercast.release.xcconfig"; sourceTree = "<group>"; };
+		B45C8F351E7E50D600889130 /* UCSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCSearcher.swift; sourceTree = "<group>"; };
 		B461F0C61E6F30B000DF688B /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		B461F0C71E6F30B000DF688B /* Author.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Author.swift; sourceTree = "<group>"; };
 		B461F0C81E6F30B000DF688B /* Enclosure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enclosure.swift; sourceTree = "<group>"; };
@@ -79,7 +81,7 @@
 		B461F0CB1E6F30B000DF688B /* Muon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Muon.h; sourceTree = "<group>"; };
 		B461F0CC1E6F30B000DF688B /* String+Muon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Muon.swift"; sourceTree = "<group>"; };
 		B461F0CD1E6F30B000DF688B /* XMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParser.swift; sourceTree = "<group>"; };
-		B461F0CF1E6F30B000DF688B /* UCSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCSearcher.swift; sourceTree = "<group>"; };
+		B461F0CF1E6F30B000DF688B /* UCDigitialPodcastSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCDigitialPodcastSearcher.swift; sourceTree = "<group>"; };
 		B461F0D11E6F30B000DF688B /* UCDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCDownloader.swift; sourceTree = "<group>"; };
 		B461F0D21E6F30B000DF688B /* UCPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCPlayer.swift; sourceTree = "<group>"; };
 		B461F0D31E6F30B000DF688B /* UCUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCUtilities.swift; sourceTree = "<group>"; };
@@ -243,7 +245,8 @@
 		B461F0DB1E6F30B000DF688B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B461F0CF1E6F30B000DF688B /* UCSearcher.swift */,
+				B461F0CF1E6F30B000DF688B /* UCDigitialPodcastSearcher.swift */,
+				B45C8F351E7E50D600889130 /* UCSearcher.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -538,7 +541,7 @@
 				B461F0F51E6F30B000DF688B /* Podcast.swift in Sources */,
 				B461F0FF1E6F30B000DF688B /* PodcastTableViewCell.swift in Sources */,
 				B461F0F21E6F30B000DF688B /* EntitySubscribedPodcast+CoreDataProperties.swift in Sources */,
-				B461F0ED1E6F30B000DF688B /* UCSearcher.swift in Sources */,
+				B461F0ED1E6F30B000DF688B /* UCDigitialPodcastSearcher.swift in Sources */,
 				B461F0E91E6F30B000DF688B /* Feed.swift in Sources */,
 				B461F0EA1E6F30B000DF688B /* FeedParser.swift in Sources */,
 				B461F0EE1E6F30B000DF688B /* UCDownloader.swift in Sources */,
@@ -549,6 +552,7 @@
 				B461F0FB1E6F30B000DF688B /* PodcastsManagmentViewController.swift in Sources */,
 				851412A61D83232A0041B222 /* AppDelegate.swift in Sources */,
 				B461F0FD1E6F30B000DF688B /* DownloadTableViewCell.swift in Sources */,
+				B45C8F361E7E50D700889130 /* UCSearcher.swift in Sources */,
 				B461F0F11E6F30B000DF688B /* UCXMLParser.swift in Sources */,
 				B461F0E71E6F30B000DF688B /* Author.swift in Sources */,
 				B461F0FC1E6F30B000DF688B /* UnderViewController.swift in Sources */,

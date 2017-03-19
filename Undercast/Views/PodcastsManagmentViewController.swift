@@ -36,7 +36,7 @@ class PodcastsManagmentViewController: UnderViewController, UITableViewDelegate,
         
         txtSearch.endEditing(true);
         
-        let searcher = UCSearcher();
+        let searcher = UCDigitalPodcastSearcher();
         searcher.Seach(term: txtSearch.text!) { (results) in
             
             self.results = results;
